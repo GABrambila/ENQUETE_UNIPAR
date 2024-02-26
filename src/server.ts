@@ -11,7 +11,7 @@ app.post('/uniparpost', (request)=>{
 
     const requestBody = z. object(
         {
-            nome : z.string(), 
+            nome : z.string().optional(),
             sobrenome : z.string(), 
             idade : z.number(), 
         }
