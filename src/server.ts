@@ -1,24 +1,26 @@
+import { PrismaClient } from "@prisma/client";
 import { fastify } from "fastify";
 import {z} from 'zod'
 
 const app = fastify()
+const prisma = new PrismaClient();
 
-app.get('/unipar', ()=> {
-    return 'Olá Fastify!'
-} ) 
-
-app.post('/uniparpost', (request)=>{
+app.post('/criarEnquete', async (request)=>{
 
     const requestBody = z. object(
         {
-            nome : z.string().optional(),
-            sobrenome : z.string(), 
-            idade : z.number(), 
+            titulo : z.string(),
+            descricao : z.string(), 
+            
         }
     )
-    const pessoa = requestBody.parse(request.body)
+    const enquete = requestBody.parse(request.body)
 
-    return pessoa
+   const enqueteCriada = await  prisma.enquete.create({
+        data: enquete
+    })
+
+    return "Criado";
 
     
 })
