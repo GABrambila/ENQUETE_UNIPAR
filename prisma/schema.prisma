@@ -8,9 +8,18 @@ datasource db {
 }
 
 model Enquete {
-  codigo     String   @id @default(uuid())
-  titulo     String
-  descricao  String
-  criadoEm   DateTime @default(now())
-  alteradoEm DateTime @default(now())
+  codigo        String         @id @default(uuid())
+  titulo        String
+  descricao     String
+  criadoEm      DateTime       @default(now())
+  alteradoEm    DateTime       @default(now())
+  opcoesEnquete OpcaoEnquete[]
+}
+
+model OpcaoEnquete {
+  codigoEnquete String @id @default(uuid())
+  descricao     String
+  enqueteCodigo String
+
+  enquete Enquete @relation(fields: [enqueteCodigo], references: [codigo])
 }
