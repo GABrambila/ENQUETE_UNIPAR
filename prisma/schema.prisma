@@ -8,12 +8,14 @@ datasource db {
 }
 
 model Enquete {
-  codigo        String         @id @default(uuid())
-  titulo        String
-  descricao     String
-  criadoEm      DateTime       @default(now())
-  alteradoEm    DateTime       @default(now())
-  opcoesEnquete OpcaoEnquete[]
+  codigo     String   @id @default(uuid())
+  titulo     String
+  descricao  String
+  criadoEm   DateTime @default(now())
+  alteradoEm DateTime @default(now())
+
+  opcoesEnquete  OpcaoEnquete[]
+  votacaoEnquete VotacaoEnquete[]
 }
 
 model OpcaoEnquete {
@@ -21,5 +23,18 @@ model OpcaoEnquete {
   descricao     String
   enqueteCodigo String
 
-  enquete Enquete @relation(fields: [enqueteCodigo], references: [codigo])
+  enquete        Enquete          @relation(fields: [enqueteCodigo], references: [codigo])
+  votacaoEnquete VotacaoEnquete[]
+}
+
+model VotacaoEnquete {
+  codigoVotacao Int      @id @default(autoincrement())
+  dataVotacao   DateTime @default(now())
+  sessionID     String
+
+  enquete      Enquete      @relation(fields: [enqueteCodigo], references: [codigo])
+  opcaoEnquete OpcaoEnquete @relation(fields: [opcaoEnqueteCodigoEnquete], references: [codigoEnquete])
+
+  enqueteCodigo             String
+  opcaoEnqueteCodigoEnquete String
 }
